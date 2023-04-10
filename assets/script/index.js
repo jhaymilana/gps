@@ -8,54 +8,45 @@ Map Box Assignment
 
 'use strict';
 
+const overlay = document.querySelector('.overlay');
+const loading = document.querySelector('.loading');
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiamhheW1pbGFuYSIsImEiOiJjbGcxMzd1NnkxNWI5M2psYWt3ZThiN2QyIn0.GxZbzi-N1fh2M1CQq9Q8kg';
 
-navigator.geolocation.watchPosition(successLocation, errorLocation,
-  { enableHighAccuracy:true }
-)
+let map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: [0, 0],
+  pitch: 40,
+  zoom: 15
+});
 
-function successLocation(position) {
-  setMap([position.coords.longitude, position.coords.latitude])
-}
+const marker = new mapboxgl.Marker({
+  color: '#3898ff'
+});
 
-function errorLocation() {
-  setMap([-2.24, 53.48])
-}
+function getLocation(position) {
+  const {longitude, latitude } = position.coords;
 
-function setMap(center) {
-  let map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: center,
-    zoom: 15
-  });
-
-  const geojson = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: center
-        },
-        properties: {
-          title: 'Mapbox',
-          description: 'Your Location'
-        }
-      }
-    ]
-  };
-
-  // Map Controls
-  const nav = new mapboxgl.NavigationControl()
-  map.addControl(nav)
-
-  // Marker / Pin
-  for (const feature of geojson.features) {
-    const el = document.createElement('div');
-    el.className = 'marker';
-  
-    new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map);
+  if (longitude && latitude) {
+    map.setCenter([longitude, latitude]);
+    marker.setLngLat([longitude, latitude]).addTo(map);
+    setTimeout(() => { overlay.style.display = 'none' }, 500);
   }
+}
+
+function errorHandler(event) {
+  loading.style.animationPlayState = 'paused';
+  console.log(event.message);
+}
+
+const options = {
+  enableHighAccuracy: true,
+  maximumAge: 0
+}
+
+if (navigator.geolocation) { 
+  navigator.geolocation.watchPosition(getLocation, errorHandler, options);
+} else {
+  console.log('Geolocation is not supported by your browser');
 }
