@@ -10,7 +10,7 @@ Map Box Assignment
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamhheW1pbGFuYSIsImEiOiJjbGcxMzd1NnkxNWI5M2psYWt3ZThiN2QyIn0.GxZbzi-N1fh2M1CQq9Q8kg';
 
-navigator.geolocation.getCurrentPosition(successLocation, errorLocation,
+navigator.geolocation.watchPosition(successLocation, errorLocation,
   { enableHighAccuracy:true }
 )
 
@@ -30,9 +30,6 @@ function setMap(center) {
     zoom: 15
   });
 
-  const nav = new mapboxgl.NavigationControl()
-  map.addControl(nav)
-
   const geojson = {
     type: 'FeatureCollection',
     features: [
@@ -50,6 +47,11 @@ function setMap(center) {
     ]
   };
 
+  // Map Controls
+  const nav = new mapboxgl.NavigationControl()
+  map.addControl(nav)
+
+  // Marker / Pin
   for (const feature of geojson.features) {
     const el = document.createElement('div');
     el.className = 'marker';
