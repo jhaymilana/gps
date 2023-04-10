@@ -1,0 +1,52 @@
+@import url('./reset.css');
+
+.container {
+  margin-inline: auto;
+  width: min(100% - 30px, 1080px);
+}
+
+.center {
+  display: grid;
+  place-items: center;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Variables
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+:root {
+  --app-blue: #3c57ff;
+  --app-blue-hover: #364ee6;
+  --app-white: #E4E6EB;
+  --app-text-gray: #B0B3B8;
+  --app-hover: #3A3B3C;
+  --app-background-color: #12191A;
+  --app-header-footer: #242526;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* HTML
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Body
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+#map {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.marker {
+  background-image: url(../image/mapbox-icon.png);
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
